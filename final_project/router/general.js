@@ -31,15 +31,33 @@ public_users.get('/isbn/:isbn', function (req, res) {
   });
   
 // Get book details based on author
-public_users.get('/author/:author',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
-});
 
+public_users.get('/author/:author',function (req, res) {
+    //Write your code here
+  const authorName=req.params.author;
+  const matchingBooks = Object.values(books).filter(book=>book.author===
+      authorName)
+  if (matchingBooks.length > 0){
+      return res.status(200).json(matchingBooks);
+  }else{
+      return res.status(200).json({mensaje: 'Libro no encontrado con ese author'});
+  
+  }
+  
+  //return res.status(300).json({message: "Yet to be implemented"});
+});
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+    
+  const titleName=req.params.title;
+  const matchingBooks = Object.values(books).filter(book=>book.title===
+      titleName)
+  if (matchingBooks.length > 0){
+      return res.status(200).json(matchingBooks);
+  }else{
+      return res.status(200).json({mensaje: 'Libro no encontrado con ese titulo'});
+  
+  }
 });
 
 //  Get book review
