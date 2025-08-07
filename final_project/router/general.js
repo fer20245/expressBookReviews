@@ -34,7 +34,7 @@ public_users.get('/isbn/:isbn', function (req, res) {
 
 public_users.get('/author/:author',function (req, res) {
     //Write your code here
-  const authorName=req.params.author;
+  const authorName=req.params.author;//autorName nombre que captura de la URL
   const matchingBooks = Object.values(books).filter(book=>book.author===
       authorName)
   if (matchingBooks.length > 0){
@@ -63,6 +63,7 @@ public_users.get('/title/:title',function (req, res) {
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
   //Write your code here
+  
   return res.status(300).json({message: "Yet to be implemented"});
 });
 
