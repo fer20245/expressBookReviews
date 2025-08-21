@@ -65,38 +65,24 @@ regd_users.post("/login", (req,res) => {
 });
 
 // Add a book review
-regd_users.put("/auth/review/:isbn", (req, res) => {
-  const isbn = req.params.isbn;
-  const review = req.body.review;
-  const username = req.session.username;
+regd_users.put("/author/reviews/:isbn", (req, res) => {
+    const isbn = req.params.isbn;
+    let book = books[isbn];
+    //const review = req.body.review;
+    if (book){
+      let author = req.body.author;
+      let title = req.body.title;
+      let reviews = req.body.reviews;
+      if (author){book["author"]=author;}
+      if (title){book["title"]=title;}
+      if (reviews){book["reviews"]=reviews;}
+      books[isbn]=book;
+      res.send(`El libro con el ${isbn} fue actualizado`);
+  
+      }else{res.send("inhabilitado para conseguir el libro"); }
 
-  // Verificar que el libro existe
-  if (!books[isbn]) {
-    return res.status(404).json
-    ({ message: "Libro no encontrado con ese ISBN" });
-  }
-
-  // Verificar que se envió una reseña
-  if (!review) {
-    return res.status(400).json
-    ({ message: "Debe proporcionar una reseña" });
-  }
-
-  // Inicializar el objeto de reseñas si no existe
-  if (!books[isbn].reviews) {
-    books[isbn].reviews = {};
-  }
-
-  // Agregar o actualizar la reseña del usuario
-  books[isbn].reviews[username] = review;
-
-  return res.status(200).json
-  ({ message: "Reseña agregada/actualizada exitosamente",
-   reviews: books[isbn].reviews });
-
-  //return res.status(300).json({message: "Yet to be implemented"});
-});
-
+    });
+    
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
 module.exports.users = users;
