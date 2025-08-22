@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 let books = require("./booksdb.js");
 const regd_users = express.Router();
 
+
+
 let users = [];
 
 const isValid = (username)=>{ //returns boolean
@@ -66,6 +68,7 @@ regd_users.post("/login", (req,res) => {
 
 // Add a book review
 regd_users.put("/author/reviews/:isbn", (req, res) => {
+    
     const isbn = req.params.isbn;
     let book = books[isbn];
     //const review = req.body.review;
@@ -73,11 +76,14 @@ regd_users.put("/author/reviews/:isbn", (req, res) => {
       let author = req.body.author;
       let title = req.body.title;
       let reviews = req.body.reviews;
+      //const username = req.session?.authorization?.username || "usuario desconocido";
       if (author){book["author"]=author;}
       if (title){book["title"]=title;}
       if (reviews){book["reviews"]=reviews;}
       books[isbn]=book;
-      res.send(`El libro con el ${isbn} fue actualizado`);
+      //const username = req.session?.authorization?.username 
+      res.send(`El libro con el ${isbn} fue actualizado por el usuario
+       ${username}`);
   
       }else{res.send("inhabilitado para conseguir el libro"); }
 
