@@ -58,7 +58,8 @@ regd_users.post("/login", (req,res) => {
         req.session.authorization = {
             accessToken, username
         }
-        return res.status(200).send("El usuario ha iniciado sesion correctamente");
+        return res.status(200).send(`El usuario ${username} ha iniciado sesion 
+        correctamente`);
     } else {
         return res.status(208).json({ message: "Inicio de sesión no válido. Comprueba el nombre de usuario y la contraseña." });
     }
@@ -66,7 +67,7 @@ regd_users.post("/login", (req,res) => {
   //return res.status(300).json({message: "Yet to be implemented"});
 });
 
-// Add a book review
+// Add a book review or modifier this same
 regd_users.put("/author/reviews/:isbn", (req, res) => {
     
     const isbn = req.params.isbn;
@@ -76,16 +77,41 @@ regd_users.put("/author/reviews/:isbn", (req, res) => {
       let author = req.body.author;
       let title = req.body.title;
       let reviews = req.body.reviews;
-      //const username = req.session?.authorization?.username || "usuario desconocido";
+      const username = req.session?.authorization?.username ;
       if (author){book["author"]=author;}
       if (title){book["title"]=title;}
       if (reviews){book["reviews"]=reviews;}
+      
       books[isbn]=book;
-      //const username = req.session?.authorization?.username 
-      res.send(`El libro con el ${isbn} fue actualizado por el usuario
+       
+      res.send(`El libro con el isbn ${isbn} fue actualizado por el usuario
        ${username}`);
   
       }else{res.send("inhabilitado para conseguir el libro"); }
+
+    });
+
+    regd_users.delete("/auth/review/:isbn", (req, res) => {
+        const isbn = req.params.isbn;
+        let book = books[isbn];
+        //const review = req.body.review;
+        if (book){
+          let author = req.body.author;
+          let title = req.body.title;
+          let reviews = req.body.reviews;
+          const username = req.session?.authorization?.username ;
+          if (author){book["author"]=author;}
+          if (title){book["title"]=title;}
+          if (reviews){book["reviews"]=[];
+        }
+          books[isbn]=book;
+           
+          res.send(`La reseña del libro con el isbn ${isbn} fue eliminada por el usuario
+           ${username}`);
+      
+          }else{res.send("inhabilitado para eliminar reseña de ese libro"); }
+         
+    
 
     });
     
