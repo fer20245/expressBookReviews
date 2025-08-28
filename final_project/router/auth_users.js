@@ -91,29 +91,22 @@ regd_users.put("/author/reviews/:isbn", (req, res) => {
 
     });
 
-    regd_users.delete("/auth/review/:isbn", (req, res) => {
-        const isbn = req.params.isbn;
-        let book = books[isbn];
-        //const review = req.body.review;
-        if (book){
-          let author = req.body.author;
-          let title = req.body.title;
-          let reviews = req.body.reviews;
-          const username = req.session?.authorization?.username ;
-          if (author){book["author"]=author;}
-          if (title){book["title"]=title;}
-          if (reviews){book["reviews"]=[];
+    regd_users.delete("/author/reviews/:isbn", (req, res) => {
+        const isbn = req.params.isbn;      
+        let book = books[isbn];      
+        if (book) {
+            const username = req.session?.authorization?.username;      
+          // Elimina todas las reseñas de solamente ese usuario en sesion
+          delete book.reviews[username];      
+          books[isbn] = book;
+          //console.log("Sesión:", req.session);
+          //console.log("Username:", username);          
+          res.send(`La reseña del libro con el ISBN ${isbn} fue eliminada por ${username}`);
+        } else {
+          res.send(`Inhabilitado para eliminar reseña de ese libro`);
         }
-          books[isbn]=book;
-           
-          res.send(`La reseña del libro con el isbn ${isbn} fue eliminada por el usuario
-           ${username}`);
+      });
       
-          }else{res.send("inhabilitado para eliminar reseña de ese libro"); }
-         
-    
-
-    });
     
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
