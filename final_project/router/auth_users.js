@@ -74,12 +74,12 @@ regd_users.put("/author/reviews/:isbn", (req, res) => {
     let book = books[isbn];
     //const review = req.body.review;
     if (book){
-      let author = req.body.author;
-      let title = req.body.title;
+      //let author = req.body.author;
+      //let title = req.body.title;
       let reviews = req.body.reviews;
       const username = req.session?.authorization?.username ;
-      if (author){book["author"]=author;}
-      if (title){book["title"]=title;}
+      //if (author){book["author"]=author;}
+      //if (title){book["title"]=title;}
       if (reviews){book["reviews"]=reviews;}
       
       books[isbn]=book;

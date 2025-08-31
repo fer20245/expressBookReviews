@@ -43,38 +43,59 @@ public_users.post("/register", (req,res) => {
 
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
-    
-  res.send(books);
-  //return res.status(300).json({message: "Yet to be implemented"});
+    //Creating a promise method. The promise will 
+    //get resolved when timer times out after 6 seconds.
+let myPromise = new Promise((resolve,reject) => {
+    setTimeout(() => {
+      (res.send(books))
+    },6000)})
+//Console log before calling the promise
+console.log("Before calling promise");
+
   });
+
   //***************************************************//
  // Get book details based on ISBN
 public_users.get('/isbn/:isbn', function (req, res) {
-    const isbn = req.params.isbn;
-  
-    // Buscar el libro por la llave ISBN
-    if (books[isbn]) {
-      return res.status(200).json(books[isbn]);
-    } else {
-      return res.status(404).json({ mensaje: 'Libro no encontrado con ese ISBN' });
-    }
-  });
-  
+    const isbn = req.params.isbn;  
+    // Crear una promesa que se resuelve después de 6 segundos
+    const myPromise = new Promise((resolve, reject) => {
+      setTimeout(() => {resolve();}, 6000);});
+    // Mensaje antes de llamar la promesa
+    console.log("print the register after 6 seconds");
+    // Ejecutar la promesa despues de 6 segundos
+    myPromise.then(() => {
+      if (books[isbn]) {
+        res.send(books[isbn]);
+        //return res.status(200).json(books[isbn]);
+      } else {
+        return res.status(404).json({ mensaje: 'Libro no encontrado con ese ISBN' });
+      }
+    });
+  });  
 // Get book details based on author
 
 public_users.get('/author/:author',function (req, res) {
     //Write your code here
-  const authorName=req.params.author;//autorName nombre que captura de la URL
-  const matchingBooks = Object.values(books).filter(book=>book.author===
+const authorName=req.params.author;//autorName nombre que captura de la URL
+const matchingBooks = Object.values(books).filter(book=>book.author===
       authorName)
-  if (matchingBooks.length > 0){
+
+const myPromise = new Promise((resolve, reject) => {
+    setTimeout(() => {resolve();}, 6000);});
+      // Mensaje por consola antes de llamar la promesa
+    console.log("print the register after 6 seconds");
+      // Ejecutar la promesa despues de 6 segundos
+    myPromise.then(() => {
+    if (matchingBooks.length > 0){
       return res.status(200).json(matchingBooks);
-  }else{
+    }else{
       return res.status(200).json({mensaje: 'Libro no encontrado con ese author'});
+    }
   
-  }
-  //return res.status(300).json({message: "Yet to be implemented"});
 });
+});
+//**********************************************************//
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
     
