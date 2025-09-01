@@ -99,17 +99,24 @@ const myPromise = new Promise((resolve, reject) => {
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
     
-  const titleName=req.params.title;
-  const matchingBooks = Object.values(books).filter(book=>book.title===
-      titleName)
-  if (matchingBooks.length > 0){
-      return res.status(200).json(matchingBooks);
-  }else{
-      return res.status(200).json({mensaje: 'Libro no encontrado con ese titulo'});
-  
-  }
-});
+  const titleName=req.params.title.toLowerCase();;
 
+  const matchingBooks = Object.values(books).filter(book=>book.title.toLowerCase()===
+      titleName.toLowerCase());
+      const myPromise = new Promise((resolve, reject) => {
+        setTimeout(() => {resolve();}, 6000);});
+        console.log("print the register after 6 seconds");
+        myPromise.then(() => {
+        if (matchingBooks.length > 0){
+        return res.status(200).json(matchingBooks);
+        }else{
+          return res.status(200).json({mensaje: 'Libro no encontrado con ese titulo'});
+        }
+      
+    });
+    });
+  
+//****************************************************************************//
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
   //Write your code here
